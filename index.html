@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova - Jogo Heroi</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .history {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .gray-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .restart-button {
+            display: none;
+        }
+        .restart-button.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="timer">{{ timerDisplay }}</div>
+        <div class="game-container">
+            <div class="character hero">
+                <div class="life-bar" :style="{ width: hero.life + '%' }"></div>
+                <div class="sprite">
+                    <div class="tenor-gif-embed" data-postid="17378279118175096910" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+                        <a href="https://tenor.com/view/zelda-totk-gif-17378279118175096910">Zelda Totk Sticker</a> from 
+                        <a href="https://tenor.com/search/zelda+totk-stickers">Zelda Totk Stickers</a>
+                    </div>
+                    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+                </div>
+                <h1>Zelda</h1>
+                <div class="actions">
+                    <button @click="performAction('attack', true)" :disabled="cooldowns.attack">Atacar</button>
+                    <button @click="performAction('defense', true)" :disabled="cooldowns.defense">Defender</button>
+                    <button @click="performAction('usePotion', true)" :disabled="cooldowns.usePotion">Usar poção</button>
+                    <button @click="performAction('flee', true)" :disabled="cooldowns.flee || timer < 75">Fugir</button>
+                </div>
+            </div>
+            <div class="character villain">
+                <div class="life-bar" :style="{ width: villain.life + '%' }"></div>
+                <div class="sprite">
+                    <div class="tenor-gif-embed" data-postid="17137669" data-share-method="host" data-aspect-ratio="1.61616" data-width="100%">
+                        <a href="https://tenor.com/view/the-legend-of-zelda-you-must-die-militron-link-the-faces-of-evil-villain-gif-17137669">The Legend Of Zelda You Must Die Sticker</a> from 
+                        <a href="https://tenor.com/search/the+legend+of+zelda-stickers">The Legend Of Zelda Stickers</a> 
+                    </div>
+                    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+                </div>
+                <h1>Darkan</h1>
+            </div>
+        </div>
+        <div class="history" ref="actionHistory">
+            <h2>Histórico de Ações</h2>
+            <ul>
+                <li v-for="action in actionHistory">{{ action }}</li>
+            </ul>
+        </div>
+        <div class="gray-screen" v-if="gameEnded">
+           <button @click="restartGame" :class="{ 'show': gameEnded }" class="restart-button">Reiniciar Jogo</button>
+        </div>
+    </div>
+    <audio id="attack-sound" src="attack.mp3"></audio>
+    <audio id="defense-sound" src="defense.mp3"></audio>
+    <audio id="potion-sound" src="potion.mp3"></audio>
+    <audio id="flee-sound" src="flee.mp3"></audio>
+    <script src="index.js"></script>
+</body>
+</html>
